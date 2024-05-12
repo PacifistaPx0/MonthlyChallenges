@@ -17,6 +17,21 @@ month_dict = {
     "december": "This is December"
 }
 
+def index(request):
+    list_items = ""
+    months = list(month_dict.keys())
+
+    for month in months:
+        capitalized_month = month.capitalize()
+        month_path = reverse("month-challenge", args=[month])
+        list_items += f"<li><a href=\"{month_path}\">{capitalized_month}</a></li>"
+
+    # "<li><a href=""...">january</a><li><a href="...">february</a>...
+
+    response_data = f"<ul>{list_items}</ul>"
+
+    return HttpResponse(response_data)
+
 def monthly_challenge_by_number(request, month):
 
     try:
@@ -32,8 +47,9 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challenge_text = month_dict[month]
-        return HttpResponse(challenge_text)
+        response_data = f"<h1>{challenge_text}</h1>"
+        return HttpResponse(response_data)
     except:
-        return HttpResponseNotFound("This month does not exist")
+        return HttpResponseNotFound("<h1>This month does not exist</h1>")
     
 
