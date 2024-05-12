@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-
+from django.urls import reverse
 # Create your views here.
 month_dict = {
     "january": "This is January",
@@ -22,7 +22,9 @@ def monthly_challenge_by_number(request, month):
     try:
         if month==0:
             return HttpResponseNotFound("Month does not exist")
-        return HttpResponseRedirect("/challenges/" + list(month_dict.keys())[month-1])
+        redirect_month = list(month_dict.keys())[month-1]
+        redirect_path = reverse("month-challenge", args=[redirect_month]) # /challenge/january
+        return HttpResponseRedirect(redirect_path)
     except:
         return HttpResponseNotFound("Month does not exist")
 
